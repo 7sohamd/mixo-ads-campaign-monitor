@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Campaign, CampaignStatus } from '../types';
-import { Search, ChevronRight, ArrowUpDown, Download, X, ChevronDown, Check, LayoutGrid, PlayCircle, PauseCircle, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, ArrowUpDown, Download, ChevronDown, Check, LayoutGrid, PlayCircle, PauseCircle, CheckCircle2 } from 'lucide-react';
 import { SearchBar } from './SearchBar';
 
 interface CampaignTableProps {
@@ -16,17 +15,14 @@ interface CampaignTableProps {
 type SortKey = 'name' | 'status' | 'budget' | 'platforms' | 'created_at';
 type SortOrder = 'asc' | 'desc' | 'none';
 
+// Platform Icon Component
 export const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
   const p = platform.toLowerCase();
 
-  // Use meta.png for meta-tagged platforms
   if (p.includes('meta')) {
-    return (
-      <img src="/meta.png" alt="Meta" className="w-5 h-5" />
-    );
+    return <img src="/meta.png" alt="Meta" className="w-5 h-5" />;
   }
 
-  // Use Facebook SVG only when platform is explicitly "facebook"
   if (p === 'facebook') {
     return (
       <svg className="w-5 h-5 text-[#0668E1]" viewBox="0 0 24 24" fill="currentColor">
@@ -34,6 +30,7 @@ export const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
       </svg>
     );
   }
+
   if (p.includes('google')) {
     return (
       <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -44,6 +41,7 @@ export const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
       </svg>
     );
   }
+
   if (p.includes('linkedin')) {
     return (
       <svg className="w-5 h-5 text-[#0077B5]" viewBox="0 0 24 24" fill="currentColor">
@@ -51,6 +49,7 @@ export const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
       </svg>
     );
   }
+
   if (p.includes('tiktok')) {
     return (
       <svg className="w-5 h-5 text-black" viewBox="0 0 24 24" fill="currentColor">
@@ -58,9 +57,11 @@ export const PlatformIcon: React.FC<{ platform: string }> = ({ platform }) => {
       </svg>
     );
   }
-  return <span className="text-[10px] font-bold text-slate-400 uppercase">{platform}</span>;
-}
 
+  return <span className="text-[10px] font-bold text-slate-400 uppercase">{platform}</span>;
+};
+
+// Status Filter Dropdown Component
 const StatusFilterDropdown: React.FC<{
   value: string;
   onChange: (value: string) => void;
@@ -78,27 +79,19 @@ const StatusFilterDropdown: React.FC<{
   const selectedOption = options.find(opt => opt.value === value) || options[0];
 
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setIsOpen(false);
     };
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
+    const handleEscape = (e: KeyboardEvent) => e.key === 'Escape' && setIsOpen(false);
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('keydown', handleEscape);
+      };
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
-    };
   }, [isOpen]);
 
   return (
@@ -112,10 +105,7 @@ const StatusFilterDropdown: React.FC<{
           {selectedOption.icon}
           <span className="font-semibold">{selectedOption.label}</span>
         </span>
-        <ChevronDown
-          size={16}
-          className={`text-indigo-600 dark:text-indigo-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-        />
+        <ChevronDown size={16} className={`text-indigo-600 dark:text-indigo-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -130,17 +120,15 @@ const StatusFilterDropdown: React.FC<{
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium transition-colors duration-150 ${value === option.value
-                  ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+                    ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
               >
                 <span className="flex items-center gap-3">
                   {option.icon}
                   <span className="font-semibold">{option.label}</span>
                 </span>
-                {value === option.value && (
-                  <Check size={16} className="text-indigo-600 dark:text-indigo-400 font-bold" />
-                )}
+                {value === option.value && <Check size={16} className="text-indigo-600 dark:text-indigo-400 font-bold" />}
               </button>
             ))}
           </div>
@@ -150,43 +138,119 @@ const StatusFilterDropdown: React.FC<{
   );
 };
 
-export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelect, onExport, isLoading, externalSearch, onSearchChange }) => {
-  const [statusFilter, setStatusFilter] = React.useState<string>('all');
-  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; order: SortOrder }>({ key: 'status', order: 'asc' });
+// Table Header Component
+const TableHeader: React.FC<{
+  sortKey: SortKey;
+  currentSort: { key: SortKey; order: SortOrder };
+  onSort: (key: SortKey) => void;
+  label: string;
+  align?: 'left' | 'right';
+}> = ({ sortKey, currentSort, onSort, label, align = 'left' }) => {
+  const isActive = currentSort.key === sortKey && currentSort.order !== 'none';
+  const iconColor = isActive ? 'text-indigo-600' : 'text-slate-300';
+  const className = align === 'right' ? 'ml-auto' : '';
 
-  const effectiveSearch = externalSearch ?? "";
+  return (
+    <button
+      onClick={() => onSort(sortKey)}
+      className={`flex items-center gap-1.5 ${className} text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors`}
+    >
+      {label} <ArrowUpDown size={10} className={iconColor} />
+    </button>
+  );
+};
+
+// Campaign Row Component
+const CampaignRow: React.FC<{
+  campaign: Campaign;
+  onSelect: (campaign: Campaign) => void;
+}> = ({ campaign, onSelect }) => {
+  const getStatusDot = (status: CampaignStatus) => {
+    const colors = {
+      active: 'bg-emerald-500',
+      paused: 'bg-amber-400',
+      completed: 'bg-slate-300',
+      draft: 'bg-slate-200'
+    };
+    return colors[status] || 'bg-slate-200';
+  };
+
+  return (
+    <tr
+      className="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors cursor-pointer group"
+      onClick={() => onSelect(campaign)}
+    >
+      <td className="px-6 py-5">
+        <div className="text-[13px] font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+          {campaign.name}
+        </div>
+      </td>
+      <td className="px-6 py-5">
+        <div className="flex items-center gap-2">
+          <div className={`w-1.5 h-1.5 rounded-full ${getStatusDot(campaign.status)}`} />
+          <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">
+            {campaign.status}
+          </span>
+        </div>
+      </td>
+      <td className="px-6 py-5 text-right font-bold text-slate-900 dark:text-slate-100 text-[13px]">
+        ${campaign.budget.toLocaleString()}
+      </td>
+      <td className="px-6 py-5">
+        <div className="flex gap-4 items-center">
+          {campaign.platforms.map(p => (
+            <div key={p} className="flex items-center justify-center transition-transform hover:scale-110" title={p}>
+              <PlatformIcon platform={p} />
+            </div>
+          ))}
+        </div>
+      </td>
+      <td className="px-6 py-5 text-right text-[11px] font-medium text-slate-400 dark:text-slate-500">
+        {new Date(campaign.created_at).toLocaleDateString()}
+      </td>
+      <td className="px-6 py-5 text-right">
+        <ChevronRight size={14} className="text-slate-200 dark:text-slate-600 group-hover:text-slate-900 dark:group-hover:text-slate-300" />
+      </td>
+    </tr>
+  );
+};
+
+// Hooks and Utilities
+const useSort = (initialKey: SortKey = 'status', initialOrder: SortOrder = 'asc') => {
+  const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; order: SortOrder }>({ key: initialKey, order: initialOrder });
 
   const handleSort = (key: SortKey) => {
     let order: SortOrder = 'desc';
     if (sortConfig.key === key) {
-      if (sortConfig.order === 'desc') order = 'asc';
-      else if (sortConfig.order === 'asc') order = 'none';
+      order = sortConfig.order === 'desc' ? 'asc' : sortConfig.order === 'asc' ? 'none' : 'desc';
     }
     setSortConfig({ key, order });
   };
 
-  const getSortIconColor = (key: SortKey) => sortConfig.key === key && sortConfig.order !== 'none' ? 'text-indigo-600' : 'text-slate-300';
+  return { sortConfig, handleSort };
+};
 
-  const statusWeight = (s: CampaignStatus) => {
-    switch (s) {
-      case 'active': return 0;
-      case 'paused': return 1;
-      case 'draft': return 2;
-      case 'completed': return 3;
-      default: return 4;
-    }
-  }
+const statusWeight = (s: CampaignStatus) => {
+  const weights = { active: 0, paused: 1, draft: 2, completed: 3 };
+  return weights[s] ?? 4;
+};
 
-  const filtered = React.useMemo(() => {
-    let result = campaigns.filter(c => {
-      const s = effectiveSearch.toLowerCase();
+const useCampaignFilter = (
+  campaigns: Campaign[],
+  search: string,
+  statusFilter: string,
+  sortConfig: { key: SortKey; order: SortOrder }
+) => {
+  return React.useMemo(() => {
+    const filtered = campaigns.filter(c => {
+      const s = search.toLowerCase();
       const matchesSearch = c.name.toLowerCase().includes(s) || c.platforms.some(p => p.toLowerCase().includes(s));
       const matchesStatus = statusFilter === 'all' || c.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
 
     if (sortConfig.order !== 'none') {
-      result.sort((a, b) => {
+      filtered.sort((a, b) => {
         let valA: any, valB: any;
         switch (sortConfig.key) {
           case 'name': valA = a.name; valB = b.name; break;
@@ -202,17 +266,23 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
         return sortConfig.order === 'asc' ? valA - valB : valB - valA;
       });
     }
-    return result;
-  }, [campaigns, effectiveSearch, statusFilter, sortConfig]);
+    return filtered;
+  }, [campaigns, search, statusFilter, sortConfig]);
+};
 
-  const getStatusDot = (status: CampaignStatus) => {
-    switch (status) {
-      case 'active': return 'bg-emerald-500';
-      case 'paused': return 'bg-amber-400';
-      case 'completed': return 'bg-slate-300';
-      default: return 'bg-slate-200';
-    }
-  };
+// Main Component
+export const CampaignTable: React.FC<CampaignTableProps> = ({
+  campaigns,
+  onSelect,
+  onExport,
+  isLoading,
+  externalSearch,
+  onSearchChange
+}) => {
+  const [statusFilter, setStatusFilter] = React.useState('all');
+  const { sortConfig, handleSort } = useSort();
+  const effectiveSearch = externalSearch ?? '';
+  const filtered = useCampaignFilter(campaigns, effectiveSearch, statusFilter, sortConfig);
 
   return (
     <div className="bg-white dark:bg-[#141414] rounded-2xl border border-slate-200 dark:border-slate-900 shadow-sm overflow-hidden">
@@ -236,10 +306,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
             <span className="hidden sm:inline">Export CSV</span>
           </button>
 
-          <StatusFilterDropdown
-            value={statusFilter}
-            onChange={setStatusFilter}
-          />
+          <StatusFilterDropdown value={statusFilter} onChange={setStatusFilter} />
         </div>
       </div>
 
@@ -248,29 +315,19 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
           <thead className="bg-white dark:bg-[#141414] border-b border-slate-100 dark:border-slate-900">
             <tr>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('name')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Name <ArrowUpDown size={10} className={getSortIconColor('name')} />
-                </button>
+                <TableHeader sortKey="name" currentSort={sortConfig} onSort={handleSort} label="Name" />
               </th>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('status')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Status <ArrowUpDown size={10} className={getSortIconColor('status')} />
-                </button>
+                <TableHeader sortKey="status" currentSort={sortConfig} onSort={handleSort} label="Status" />
               </th>
               <th className="px-6 py-3 text-right">
-                <button onClick={() => handleSort('budget')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Budget <ArrowUpDown size={10} className={getSortIconColor('budget')} />
-                </button>
+                <TableHeader sortKey="budget" currentSort={sortConfig} onSort={handleSort} label="Budget" align="right" />
               </th>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('platforms')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Platforms <ArrowUpDown size={10} className={getSortIconColor('platforms')} />
-                </button>
+                <TableHeader sortKey="platforms" currentSort={sortConfig} onSort={handleSort} label="Platforms" />
               </th>
               <th className="px-6 py-3 text-right">
-                <button onClick={() => handleSort('created_at')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Date <ArrowUpDown size={10} className={getSortIconColor('created_at')} />
-                </button>
+                <TableHeader sortKey="created_at" currentSort={sortConfig} onSort={handleSort} label="Date" align="right" />
               </th>
               <th className="px-6 py-3 w-10"></th>
             </tr>
@@ -284,46 +341,12 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
               ))
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-20 text-center text-slate-400 dark:text-slate-500 text-sm italic">No campaigns found</td>
+                <td colSpan={6} className="px-6 py-20 text-center text-slate-400 dark:text-slate-500 text-sm italic">
+                  No campaigns found
+                </td>
               </tr>
             ) : (
-              filtered.map((campaign) => (
-                <tr
-                  key={campaign.id}
-                  className="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors cursor-pointer group"
-                  onClick={() => onSelect(campaign)}
-                >
-                  <td className="px-6 py-5">
-                    <div className="text-[13px] font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{campaign.name}</div>
-                  </td>
-                  <td className="px-6 py-5">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${getStatusDot(campaign.status)}`} />
-                      <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">
-                        {campaign.status}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-5 text-right font-bold text-slate-900 dark:text-slate-100 text-[13px]">
-                    ${campaign.budget.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-5">
-                    <div className="flex gap-4 items-center">
-                      {campaign.platforms.map(p => (
-                        <div key={p} className="flex items-center justify-center transition-transform hover:scale-110" title={p}>
-                          <PlatformIcon platform={p} />
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-6 py-5 text-right text-[11px] font-medium text-slate-400 dark:text-slate-500">
-                    {new Date(campaign.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-5 text-right">
-                    <ChevronRight size={14} className="text-slate-200 dark:text-slate-600 group-hover:text-slate-900 dark:group-hover:text-slate-300" />
-                  </td>
-                </tr>
-              ))
+              filtered.map((campaign) => <CampaignRow key={campaign.id} campaign={campaign} onSelect={onSelect} />)
             )}
           </tbody>
         </table>
