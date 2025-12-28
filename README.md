@@ -16,6 +16,9 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - **Custom Tooltips**: Rich tooltips displaying campaign ID, investment, and returns
 - **Real-time Data**: Live data fetched from backend API with automatic synchronization
 
+  <img width="2555" height="1317" alt="image" src="https://github.com/user-attachments/assets/82e504db-e3cc-40d7-b6a2-2d677e090ddb" />
+
+
 ### 2. Campaign Management
 - **Advanced Campaign Table**:
   - **Live Search**: Real-time filtering by campaign name or advertising platform
@@ -33,6 +36,9 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - Facebook-specific icon for legacy campaigns
   - SVG icons with proper colors matching brand guidelines
   - Hover scale effects on platform icons
+ 
+    <img width="1698" height="880" alt="image" src="https://github.com/user-attachments/assets/b9691f02-871f-4b4c-a7a2-5caf4f295449" />
+
 
 ### 3. AI-Powered Intelligence (Gemini API)
 - **AI Advisor Sidebar**:
@@ -45,7 +51,7 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - **Staggered Animations**: Insights appear with fade-in and slide-up effects
   - **Color-coded Insights**: Different colored badges for different insight types
   - **Timestamp**: "Just now" timestamp for each insight
-- **Strategic Audit Reports**: Professional PDF generation using Gemini 3 Pro
+- **Strategic Audit Reports**: Professional PDF generation using Gemini .
   - Executive summaries with AI-generated strategic insights
   - Budget analysis and performance metrics
   - Structured table of full 14-campaign pool sorted by ROI
@@ -54,6 +60,8 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - Automatic page breaks for long reports
   - Text wrapping for executive summaries
 - **Background Processing**: Loading states during report generation
+  
+     <img width="496" height="430" alt="Films   TV 28-12-2025 19_31_05" src="https://github.com/user-attachments/assets/ed209365-9eac-4df6-ae92-bc80365c79fe" />
 
 ### 4. Campaign Detail View
 - **Modal Interface**: 
@@ -73,6 +81,9 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - Normalized metrics: CTR, Conversion Rate, CPC Efficiency, Conversion Volume, Quality Score
   - Custom styling for dark mode with proper stroke colors
   - Animated chart rendering
+
+<img width="2201" height="1316" alt="image" src="https://github.com/user-attachments/assets/93528613-60b5-4d14-bd6b-bd2939bfac01" />
+
 
 ### 5. User Interface & Experience
 - **Dark Mode**:
@@ -115,6 +126,9 @@ A high-performance, production-ready campaign monitoring dashboard built for the
   - Rounded corners and modern card designs
   - Smooth transitions and micro-interactions
   - Loading skeletons matching content structure
+ 
+    <img width="2553" height="1256" alt="image" src="https://github.com/user-attachments/assets/7861c320-bb2e-47a0-912d-9bba2123199b" />
+
 
 ### 6. Data & API Integration
 - **Backend Integration**:
@@ -182,6 +196,10 @@ A high-performance, production-ready campaign monitoring dashboard built for the
 - **Custom Hooks**: useDashboardData, useCampaignDetails, useTheme, useWindowWidth
 
 ## Mobile Experience
+
+  <img width="624" height="1105" alt="image" src="https://github.com/user-attachments/assets/eeb80e70-7f48-481f-9712-560c30a48358" />
+
+
 The app is optimized for mobile-first utility:
 - **Responsive Drawers**: Navigation and AI panels collapse into touch-friendly drawers
 - **Touch Gestures**: 
