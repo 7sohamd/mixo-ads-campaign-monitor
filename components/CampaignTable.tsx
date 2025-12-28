@@ -106,7 +106,7 @@ const StatusFilterDropdown: React.FC<{
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 min-w-[180px] shadow-sm hover:shadow-md"
+        className="inline-flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 hover:border-indigo-300 dark:hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-200 min-w-[180px] shadow-sm hover:shadow-md"
       >
         <span className="flex items-center gap-2">
           {selectedOption.icon}
@@ -114,12 +114,12 @@ const StatusFilterDropdown: React.FC<{
         </span>
         <ChevronDown
           size={16}
-          className={`text-indigo-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`text-indigo-600 dark:text-indigo-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-full min-w-[200px] bg-white rounded-xl border-2 border-slate-200 shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-full min-w-[200px] bg-white dark:bg-slate-800 rounded-xl border-2 border-slate-200 dark:border-slate-700 shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="py-1.5">
             {options.map((option) => (
               <button
@@ -130,8 +130,8 @@ const StatusFilterDropdown: React.FC<{
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium transition-colors duration-150 ${value === option.value
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'text-slate-700 hover:bg-slate-50'
+                  ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
               >
                 <span className="flex items-center gap-3">
@@ -139,7 +139,7 @@ const StatusFilterDropdown: React.FC<{
                   <span className="font-semibold">{option.label}</span>
                 </span>
                 {value === option.value && (
-                  <Check size={16} className="text-indigo-600 font-bold" />
+                  <Check size={16} className="text-indigo-600 dark:text-indigo-400 font-bold" />
                 )}
               </button>
             ))}
@@ -215,8 +215,8 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 flex flex-col md:flex-row gap-4 justify-between items-center bg-white border-b border-slate-50">
+    <div className="bg-white dark:bg-[#141414] rounded-2xl border border-slate-200 dark:border-slate-900 shadow-sm overflow-hidden">
+      <div className="px-6 py-4 flex flex-col md:flex-row gap-4 justify-between items-center bg-white dark:bg-[#141414] border-b border-slate-50 dark:border-slate-900">
         <div className="flex items-center gap-4 w-full md:w-auto">
           <SearchBar
             value={effectiveSearch}
@@ -230,7 +230,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
           <button
             onClick={onExport}
             disabled={campaigns.length === 0}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-bold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 hover:border-indigo-100 transition-all uppercase tracking-widest disabled:opacity-50 h-9"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-slate-100 dark:border-slate-700 hover:border-indigo-100 dark:hover:border-indigo-800 transition-all uppercase tracking-widest disabled:opacity-50 h-9"
           >
             <Download size={14} />
             <span className="hidden sm:inline">Export CSV</span>
@@ -245,66 +245,66 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
 
       <div className="overflow-x-auto">
         <table className="w-full text-left">
-          <thead className="bg-white border-b border-slate-100">
+          <thead className="bg-white dark:bg-[#141414] border-b border-slate-100 dark:border-slate-900">
             <tr>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('name')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+                <button onClick={() => handleSort('name')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Name <ArrowUpDown size={10} className={getSortIconColor('name')} />
                 </button>
               </th>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('status')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+                <button onClick={() => handleSort('status')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Status <ArrowUpDown size={10} className={getSortIconColor('status')} />
                 </button>
               </th>
               <th className="px-6 py-3 text-right">
-                <button onClick={() => handleSort('budget')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+                <button onClick={() => handleSort('budget')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Budget <ArrowUpDown size={10} className={getSortIconColor('budget')} />
                 </button>
               </th>
               <th className="px-6 py-3">
-                <button onClick={() => handleSort('platforms')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+                <button onClick={() => handleSort('platforms')} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Platforms <ArrowUpDown size={10} className={getSortIconColor('platforms')} />
                 </button>
               </th>
               <th className="px-6 py-3 text-right">
-                <button onClick={() => handleSort('created_at')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+                <button onClick={() => handleSort('created_at')} className="flex items-center gap-1.5 ml-auto text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Date <ArrowUpDown size={10} className={getSortIconColor('created_at')} />
                 </button>
               </th>
               <th className="px-6 py-3 w-10"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
             {isLoading ? (
               [...Array(5)].map((_, i) => (
                 <tr key={i} className="animate-pulse">
-                  <td colSpan={6} className="px-6 py-5 h-12 bg-slate-50/10"></td>
+                  <td colSpan={6} className="px-6 py-5 h-12 bg-slate-50/10 dark:bg-slate-700/10"></td>
                 </tr>
               ))
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-20 text-center text-slate-400 text-sm italic">No campaigns found</td>
+                <td colSpan={6} className="px-6 py-20 text-center text-slate-400 dark:text-slate-500 text-sm italic">No campaigns found</td>
               </tr>
             ) : (
               filtered.map((campaign) => (
                 <tr
                   key={campaign.id}
-                  className="hover:bg-slate-50/80 transition-colors cursor-pointer group"
+                  className="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors cursor-pointer group"
                   onClick={() => onSelect(campaign)}
                 >
                   <td className="px-6 py-5">
-                    <div className="text-[13px] font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{campaign.name}</div>
+                    <div className="text-[13px] font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{campaign.name}</div>
                   </td>
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-2">
                       <div className={`w-1.5 h-1.5 rounded-full ${getStatusDot(campaign.status)}`} />
-                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
+                      <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">
                         {campaign.status}
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-5 text-right font-bold text-slate-900 text-[13px]">
+                  <td className="px-6 py-5 text-right font-bold text-slate-900 dark:text-slate-100 text-[13px]">
                     ${campaign.budget.toLocaleString()}
                   </td>
                   <td className="px-6 py-5">
@@ -316,11 +316,11 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns, onSelec
                       ))}
                     </div>
                   </td>
-                  <td className="px-6 py-5 text-right text-[11px] font-medium text-slate-400">
+                  <td className="px-6 py-5 text-right text-[11px] font-medium text-slate-400 dark:text-slate-500">
                     {new Date(campaign.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-5 text-right">
-                    <ChevronRight size={14} className="text-slate-200 group-hover:text-slate-900" />
+                    <ChevronRight size={14} className="text-slate-200 dark:text-slate-600 group-hover:text-slate-900 dark:group-hover:text-slate-300" />
                   </td>
                 </tr>
               ))

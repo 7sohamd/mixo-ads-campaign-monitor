@@ -1,0 +1,80 @@
+/* Tailwind base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme CSS Variables */
+:root {
+  /* Light mode semantic tokens */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F7F9FB;
+  --bg-tertiary: #F1F5F9;
+  --bg-accent: #F0F4FF;
+  
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text-inverse: #FFFFFF;
+  
+  --border-default: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  
+  --accent: #6366F1;
+  --accent-hover: #4F46E5;
+  --accent-subtle: #EEF2FF;
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+.dark {
+  /* Dark mode semantic tokens */
+  --bg-primary: #1E293B;
+  --bg-secondary: #0F172A;
+  --bg-tertiary: #334155;
+  --bg-accent: #1E1B4B;
+  
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #64748B;
+  --text-inverse: #0F172A;
+  
+  --border-default: #334155;
+  --border-subtle: #1E293B;
+  
+  --accent: #818CF8;
+  --accent-hover: #A5B4FC;
+  --accent-subtle: #312E81;
+  
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.7);
+}
+
+/* Scrollbar styling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}

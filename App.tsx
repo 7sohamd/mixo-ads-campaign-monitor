@@ -3,6 +3,7 @@ import { InsightsData } from './types';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useCampaignDetails } from './hooks/useCampaignDetails';
 import { useWindowWidth } from './hooks/useWindowWidth';
+import { useTheme } from './hooks/useTheme';
 import { generatePdfReport } from './utils/reportGenerator';
 import { exportCampaignsCsv } from './utils/csvExporter';
 import { StatCard } from './components/StatCard';
@@ -16,6 +17,8 @@ import { CampaignDetailModal } from './components/CampaignDetailModal';
 import { Wallet, AlertCircle, X, TrendingUp, BarChart3, Target } from 'lucide-react';
 
 export default function App() {
+  const { theme, toggleTheme } = useTheme();
+
   const {
     campaigns,
     insightsResponse,
@@ -132,10 +135,10 @@ export default function App() {
   }, [closeDetails]);
 
   return (
-    <div className="h-screen bg-[#F7F9FB] flex overflow-hidden">
+    <div className="h-screen bg-slate-50 dark:bg-[#0a0a0a] flex overflow-hidden">
       {(isLeftSidebarOpen || (isRightPanelOpen && windowWidth < 1024)) && (
         <div
-          className="fixed inset-0 bg-slate-900/20 backdrop-blur-[1px] z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/20 dark:bg-black/40 backdrop-blur-[1px] z-40 lg:hidden"
           onClick={() => {
             setIsLeftSidebarOpen(false);
             if (windowWidth < 1024) setIsRightPanelOpen(false);
@@ -155,6 +158,8 @@ export default function App() {
 
       <div className="flex-1 flex flex-col min-w-0 h-full relative">
         <Header
+          theme={theme}
+          onToggleTheme={toggleTheme}
           isLeftSidebarOpen={isLeftSidebarOpen}
           isRightPanelOpen={isRightPanelOpen}
           searchQuery={searchQuery}
@@ -172,11 +177,11 @@ export default function App() {
             <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
 
             <div className="flex items-center justify-between mb-1">
-              <h1 className="text-lg font-bold text-slate-900">Campaign Overview</h1>
+              <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">Campaign Overview</h1>
             </div>
 
             {error && (
-              <div className="bg-rose-50 border border-rose-200 p-4 rounded-xl flex items-center gap-3 text-rose-700">
+              <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 p-4 rounded-xl flex items-center gap-3 text-rose-700 dark:text-rose-400">
                 <AlertCircle className="w-5 h-5 shrink-0" />
                 <p className="text-sm font-medium">{error}</p>
                 <button onClick={fetchData} className="ml-auto text-xs font-bold uppercase tracking-wider hover:underline">Retry</button>
@@ -192,23 +197,25 @@ export default function App() {
 
             <section className="space-y-4">
               <div className="flex flex-col gap-0.5">
-                <h2 className="text-[11px] font-bold text-slate-900 uppercase tracking-widest">Performance Analysis</h2>
-                <p className="text-[10px] text-slate-400 font-medium italic">
+                <h2 className="text-[11px] font-bold text-slate-900 dark:text-slate-100 uppercase tracking-widest">Performance Analysis</h2>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium italic">
                   Top {chartDisplayLimit} High-Efficiency ROI Campaigns
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-[500px]">
+              <div className="bg-white dark:bg-[#141414] p-6 rounded-2xl border border-slate-200 dark:border-slate-900 shadow-sm overflow-hidden h-[500px]">
                 <CampaignChart
                   data={filteredComparisonData}
                   isLoading={isLoading}
                   onToggleMaximized={() => setIsChartMaximized(true)}
+                  onBarClick={handleSelectCampaign}
+                  campaigns={campaigns}
                 />
               </div>
             </section>
 
             <section className="space-y-4" ref={inventoryRef}>
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Campaign Inventory</h2>
+                <h2 className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Campaign Inventory</h2>
               </div>
               <CampaignTable
                 campaigns={campaigns}
@@ -222,13 +229,13 @@ export default function App() {
           </div>
 
           <aside
-            className={`bg-white border-l border-slate-200 overflow-y-auto transition-all duration-300 ease-in-out shrink-0 overflow-x-hidden fixed lg:static right-0 inset-y-0 z-50 lg:z-auto ${isRightPanelOpen ? 'w-[320px] sm:w-[360px] p-6 opacity-100 translate-x-0' : 'w-0 p-0 opacity-0 translate-x-full lg:translate-x-0 overflow-hidden'
+            className={`bg-white dark:bg-[#111111] border-l border-slate-200 dark:border-slate-900 overflow-y-auto transition-all duration-300 ease-in-out shrink-0 overflow-x-hidden fixed lg:static right-0 inset-y-0 z-50 lg:z-auto ${isRightPanelOpen ? 'w-[320px] sm:w-[360px] p-6 opacity-100 translate-x-0' : 'w-0 p-0 opacity-0 translate-x-full lg:translate-x-0 overflow-hidden'
               }`}
           >
             <div className="w-full flex flex-col h-full">
               <div className="flex items-center justify-between mb-6 lg:hidden">
-                <h3 className="text-sm font-bold text-slate-900">Optimization Tools</h3>
-                <button onClick={() => setIsRightPanelOpen(false)} className="p-2 text-slate-400">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Optimization Tools</h3>
+                <button onClick={() => setIsRightPanelOpen(false)} className="p-2 text-slate-400 dark:text-slate-500">
                   <X size={18} />
                 </button>
               </div>
@@ -249,6 +256,8 @@ export default function App() {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             onClose={() => setIsChartMaximized(false)}
+            onBarClick={handleSelectCampaign}
+            campaigns={campaigns}
           />
         )}
 

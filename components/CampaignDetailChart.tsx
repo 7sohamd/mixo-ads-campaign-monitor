@@ -54,8 +54,8 @@ export const CampaignDetailChart: React.FC<CampaignDetailChartProps> = ({ campai
   }));
 
   return (
-    <div className="w-full h-72 bg-slate-50 rounded-2xl p-4 border border-slate-100 shadow-inner">
-      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Efficiency Benchmarking</h4>
+    <div className="w-full h-72 bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 shadow-inner">
+      <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">Efficiency Benchmarking</h4>
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>
           <PolarGrid stroke="#cbd5e1" />
@@ -63,9 +63,10 @@ export const CampaignDetailChart: React.FC<CampaignDetailChartProps> = ({ campai
           <Radar
             name="Campaign"
             dataKey="A"
-            stroke="#4f46e5"
-            fill="#6366f1"
-            fillOpacity={0.4}
+            stroke="#22d3ee"
+            strokeWidth={3}
+            fill="#67e8f9"
+            fillOpacity={0.8}
             animationDuration={1500}
           />
         </RadarChart>
